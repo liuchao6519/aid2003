@@ -1,0 +1,48 @@
+"""
+ 2. 编写一个函数，传入一个设备名称，返回该设备描述信息中的 address is是什么（如果没有返回Uknow）
+    提示： 每段文件之间有空行，每段文字都是对一个设备信息的描述
+           每段的第一个单词一定是设备名称
+"""
+
+import re
+
+# 思路 ： 先根据参数的设备名称，确定需要查找的段落
+#        在段落中再进行查找address
+
+def get_address(name):
+    """
+    :param name: 设备命令
+    :return:  address is
+    """
+    # 提取段落方法
+    f = open("log.txt")
+
+    while True:
+        info = ""
+        for line in f:
+            # 如果line是空行则结束循环
+            if line == '\n':
+                break
+            info += line
+
+        # info 为空表示已经到文件结尾
+        if not info:
+            f.close()s
+            return
+
+        # 正则匹配出一段的首单词
+        obj = re.match(r"\S+",info)
+        if name == obj.group():
+            # 找到目标段落,匹配address
+            pattern = r"([0-9a-f]{4}\.){2}[0-9a-f]{4}"
+            obj = re.search(pattern,info)
+            f.close()
+            if obj is None:
+                return "Unknow"
+            else:
+                return obj.group()
+
+
+
+
+print(get_address("TenGigE0/0"))s
